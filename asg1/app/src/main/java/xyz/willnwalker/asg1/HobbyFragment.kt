@@ -1,17 +1,22 @@
 package xyz.willnwalker.asg1
 
 
-import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.navigation.fragment.navArgs
+import kotlinx.android.synthetic.main.fragment_hobby.*
 
 /**
  * A simple [Fragment] subclass.
  */
 class HobbyFragment : Fragment() {
+
+    private lateinit var mTextView: TextView
+    private val args: HobbyFragmentArgs by navArgs<>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -19,9 +24,13 @@ class HobbyFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_hobby, container, false)
     }
 
-    override fun onAttach(context: Context) {
-        super.onAttach(context)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        mTextView = textView
+        val args =
+        when(){
 
+        }
     }
 
 }

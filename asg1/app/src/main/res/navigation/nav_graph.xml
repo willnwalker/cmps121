@@ -9,5 +9,24 @@
         android:id="@+id/mainFragment"
         android:name="xyz.willnwalker.asg1.MainFragment"
         android:label="fragment_main"
-        tools:layout="@layout/fragment_main" />
+        tools:layout="@layout/fragment_main">
+        <action
+            android:id="@+id/hobbyAction"
+            app:destination="@+id/hobbyFragment"
+            app:enterAnim="@anim/nav_default_enter_anim"
+            app:exitAnim="@anim/nav_default_exit_anim">
+            <argument
+                android:name="hobby"
+                app:argType="integer" />
+        </action>
+    </fragment>
+    <fragment
+        android:id="@+id/hobbyFragment"
+        android:name="xyz.willnwalker.asg1.HobbyFragment"
+        android:label="fragment_hobby"
+        tools:layout="@layout/fragment_hobby">
+        <argument
+            android:name="hobby"
+            app:argType="integer" />
+    </fragment>
 </navigation>
