@@ -7,6 +7,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
+import androidx.navigation.NavArgs
 import androidx.navigation.fragment.navArgs
 import kotlinx.android.synthetic.main.fragment_hobby.*
 
@@ -16,7 +17,7 @@ import kotlinx.android.synthetic.main.fragment_hobby.*
 class HobbyFragment : Fragment() {
 
     private lateinit var mTextView: TextView
-    private val args: HobbyFragmentArgs by navArgs<>()
+    private val args by navArgs<HobbyFragmentArgs>()
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -27,9 +28,16 @@ class HobbyFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         mTextView = textView
-        val args =
-        when(){
+        when(args.hobby){
+            R.id.hobbybuttton1 -> {
 
+            }
+            R.id.hobbybuttton2 -> {
+
+            }
+            R.id.hobbybuttton3 -> {
+                
+            }
         }
     }
 
