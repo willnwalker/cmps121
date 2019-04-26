@@ -46,11 +46,11 @@ class MainFragment : Fragment(), View.OnClickListener {
 
     override fun onResume() {
         super.onResume()
-        val activity = requireActivity()
+        val prefs = requireActivity().getPreferences(Context.MODE_PRIVATE)
         for(x in 0..2){
-            val deleted = activity.getPreferences(Context.MODE_PRIVATE).getBoolean("hobby$x",false)
+            val deleted = prefs.getBoolean("hobby$x",false)
             if(deleted){
-                hobbyButtons.get(x).visibility = View.GONE
+                hobbyButtons[x].visibility = View.GONE
             }
         }
     }
