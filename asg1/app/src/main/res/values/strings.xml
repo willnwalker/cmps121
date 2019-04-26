@@ -3,4 +3,5 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="bio">"I'm a third year Computer Science student who specializes in Android Development and Systems Administration. My hobbies include sailing, cooking, hiking, or anything else outdoors. I also enjoy jazz music."</string>
 </resources>
