@@ -9,5 +9,29 @@
         android:id="@+id/mainFragment"
         android:name="xyz.willnwalker.assignment2.ui.main.MainFragment"
         android:label="main_fragment"
-        tools:layout="@layout/main_fragment" />
+        tools:layout="@layout/main_fragment" >
+        <action
+            android:id="@+id/action_downloadFragment"
+            app:destination="@id/action_downloadFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/action_downloadFragment"
+        android:name="xyz.willnwalker.assignment2.ui.main.DownloadFragment"
+        android:label="fragment_download"
+        tools:layout="@layout/fragment_download" />
+    <fragment
+        android:id="@+id/deleteFragment"
+        android:name="xyz.willnwalker.assignment2.ui.main.DeleteFragment"
+        android:label="fragment_delete"
+        tools:layout="@layout/fragment_delete" />
+    <fragment
+        android:id="@+id/rangeFragment"
+        android:name="xyz.willnwalker.assignment2.ui.main.RangeFragment"
+        android:label="fragment_range"
+        tools:layout="@layout/fragment_range" />
+    <fragment
+        android:id="@+id/viewFragment"
+        android:name="xyz.willnwalker.assignment2.ui.main.ViewFragment"
+        android:label="fragment_view"
+        tools:layout="@layout/fragment_view" />
 </navigation>
