@@ -13,17 +13,11 @@ import xyz.willnwalker.assignment2.R
 
 class MainFragment : Fragment(), View.OnClickListener {
 
-    val viewModel by viewModels<MainViewModel>()
     private lateinit var navController: NavController
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
         return inflater.inflate(R.layout.main_fragment, container, false)
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
-        // TODO: Use the ViewModel
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -41,13 +35,13 @@ class MainFragment : Fragment(), View.OnClickListener {
                 navController.navigate(R.id.action_downloadFragment)
             }
             R.id.deleteButton -> {
-
+                navController.navigate(R.id.action_deleteFragment)
             }
             R.id.viewButton -> {
-
+                navController.navigate(R.id.action_viewFragment)
             }
             R.id.rangeButton -> {
-
+                navController.navigate(R.id.action_rangeFragment)
             }
         }
     }

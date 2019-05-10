@@ -13,6 +13,9 @@
         <action
             android:id="@+id/action_downloadFragment"
             app:destination="@id/action_downloadFragment" />
+        <action android:id="@+id/action_deleteFragment" app:destination="@id/deleteFragment"/>
+        <action android:id="@+id/action_rangeFragment" app:destination="@id/rangeFragment"/>
+        <action android:id="@+id/action_viewFragment" app:destination="@id/viewFragment"/>
     </fragment>
     <fragment
         android:id="@+id/action_downloadFragment"
@@ -28,7 +31,9 @@
         android:id="@+id/rangeFragment"
         android:name="xyz.willnwalker.assignment2.ui.main.RangeFragment"
         android:label="fragment_range"
-        tools:layout="@layout/fragment_range" />
+        tools:layout="@layout/fragment_range" >
+        <action android:id="@+id/action_ranged_viewFragment" app:destination="@id/viewFragment"/>
+    </fragment>
     <fragment
         android:id="@+id/viewFragment"
         android:name="xyz.willnwalker.assignment2.ui.main.ViewFragment"
