@@ -1,49 +1,62 @@
 package xyz.willnwalker.assignment2.ui.main
 
-import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
-import android.util.Log
 import android.view.View
 import android.widget.Toast
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.bumptech.glide.Glide
-import com.bumptech.glide.request.FutureTarget
-import com.bumptech.glide.request.target.SizeReadyCallback
-import com.bumptech.glide.request.target.Target
-import io.realm.Realm
+import androidx.navigation.findNavController
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import xyz.willnwalker.assignment2.ImageObject
-import java.io.ByteArrayOutputStream
+import com.androidnetworking.error.ANError
+import com.androidnetworking.AndroidNetworking
+import com.androidnetworking.common.Priority
+import com.androidnetworking.interfaces.DownloadListener
+import io.realm.Realm
+import io.realm.kotlin.where
+import java.io.File
+
 
 class MainViewModel : ViewModel() {
     // TODO: Implement the ViewModel
 
     var counter: Long = 1
+    private val realm = Realm.getDefaultInstance()
 
-    fun delImage(id: Long){
-
+    fun delImage(id: Long, name: String){
+        realm.where(ImageObject::class.java)
     }
 
-    fun getImage(v: View?, url: String, name: String): Boolean{
-        var success = false
+    fun getImage(v: View, url: String, name: String){
         viewModelScope.launch(Dispatchers.IO){
-            val imageObject = ImageObject()
-            imageObject.id = counter
-            counter++
-            imageObject.name = name
-            val futureTarget: FutureTarget<Bitmap> = Glide.with(v!!).asBitmap().load(url).submit()
-            val stream = ByteArrayOutputStream()
-            futureTarget.get().compress(Bitmap.CompressFormat.PNG, 100, stream)
-            imageObject.imageBytes = stream.toByteArray()
-            val realm = Realm.getDefaultInstance()
-            realm.beginTransaction()
-            realm.insertOrUpdate(imageObject)
-            realm.commitTransaction()
-            success = true
+            AndroidNetworking.download(url, v.context.cacheDir.toString(), name)
+                .setTag("downloadTest")
+                .setPriority(Priority.HIGH)
+                .build()
+                .startDownload(object : DownloadListener {
+                    override fun onDownloadComplete() {
+                        val imageFile = File(v.context.cacheDir.toString(), name)
+                        val imageObject = ImageObject()
+                        imageObject.id = counter
+                        counter++
+                        imageObject.name = name
+                        imageObject.imageBytes = imageFile.readBytes()
+
+                        realm.beginTransaction()
+                        realm.copyToRealmOrUpdate(imageObject)
+                        realm.commitTransaction()
+
+                        imageFile.delete()
+
+                        Toast.makeText(v.context, "File downloaded successfully.", Toast.LENGTH_LONG).show()
+                        v.findNavController().navigateUp()
+                    }
+
+                    override fun onError(error: ANError) {
+                        Toast.makeText(v.context, "Error downloading file.", Toast.LENGTH_LONG).show()
+                    }
+                })
         }
-        return success
     }
 
     fun loadImages(img: ImageObject){
