@@ -44,4 +44,5 @@ dependencies {
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"
 
     implementation 'com.amitshekhar.android:android-networking:1.0.2'
+    implementation 'com.github.thorbenprimke:realm-recyclerview:0.9.25'
 }

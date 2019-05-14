@@ -17,7 +17,6 @@ class DeleteFragment : Fragment(), View.OnClickListener {
 
     private val viewModel by viewModels<MainViewModel>()
 
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         // Inflate the layout for this fragment
@@ -30,7 +29,7 @@ class DeleteFragment : Fragment(), View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-        viewModel.delImage(imgId.text.toString().toLong(), imgTitle.text.toString())
+        viewModel.delImage(v!!, imgId.text.toString().toLong(), imgTitle.text.toString())
     }
 
 }
