@@ -7,6 +7,14 @@
         android:layout_height="match_parent"
         tools:context=".MainActivity">
 
+    <Switch
+            android:text="Service Status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/serviceSwitch"
+            app:layout_constraintBottom_toTopOf="@+id/status_message" app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintStart_toStartOf="parent" app:layout_constraintEnd_toEndOf="parent"
+            android:checked="true"/>
     <TextView
             android:id="@+id/status_message"
             android:layout_width="wrap_content"
