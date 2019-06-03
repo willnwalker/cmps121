@@ -9,7 +9,6 @@ import android.os.PowerManager
 import android.widget.Toast
 
 class MovementService: Service() {
-
     private val tag = "asg3:MovementService"
     private lateinit var workerThread: Thread
     private lateinit var workerTask: MovementServiceTask
@@ -27,7 +26,7 @@ class MovementService: Service() {
     }
 
     override fun onCreate() {
-        workerTask = MovementServiceTask()
+        workerTask = MovementServiceTask(applicationContext)
         workerThread = Thread(workerTask)
         val powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
         wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,tag)
@@ -37,9 +36,10 @@ class MovementService: Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Toast.makeText(this, "Service starting", Toast.LENGTH_SHORT).show()
-        if(!workerThread.isAlive){
-            workerThread.start()
-        }
+//        if(!workerThread.isAlive){
+//            Toast.makeText(this, "Worked thread was asleep", Toast.LENGTH_SHORT).show()
+//            workerThread.start()
+//        }
         return START_STICKY
     }
 
@@ -48,7 +48,16 @@ class MovementService: Service() {
         wakeLock.release()
     }
 
+    fun updateResultCallback(resultCallback: MovementServiceTask.ResultCallback){
+        workerTask.updateResultCallback(resultCallback)
+    }
+
     fun didItMove(){
         workerTask.didItMove()
     }
+
+    fun clear(){
+        workerTask.clear()
+    }
+
 }

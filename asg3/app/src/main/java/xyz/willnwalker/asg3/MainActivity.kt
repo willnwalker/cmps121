@@ -9,30 +9,51 @@ import android.os.Bundle
 import android.os.IBinder
 import android.util.Log
 import android.view.View
+import android.view.WindowManager
 import android.widget.Toast
 import kotlinx.android.synthetic.main.activity_main.*
 
-class MainActivity : AppCompatActivity(), View.OnClickListener {
+class MainActivity : AppCompatActivity(), View.OnClickListener, MovementServiceTask.ResultCallback {
 
     private lateinit var serviceIntent: Intent
-    private lateinit var movementServiceConnection: MovementServiceConnection
+    private lateinit var movementServiceConnection: ServiceConnection
+    private var movementService: MovementService? = null
     private var serviceRunning = false
+    private var serviceBound = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val sysWindow = window
+        sysWindow.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
+        sysWindow.addFlags(WindowManager.LayoutParams.FLAG_ALLOW_LOCK_WHILE_SCREEN_ON)
+        sysWindow.addFlags(WindowManager.LayoutParams.FLAG_SHOW_WHEN_LOCKED)
+
         clearButton.setOnClickListener(this)
         exitButton.setOnClickListener(this)
         serviceSwitch.setOnClickListener(this)
         serviceIntent = Intent(this, MovementService::class.java)
-        movementServiceConnection = MovementServiceConnection(this)
+        movementServiceConnection = object: ServiceConnection {
+            override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+                movementService = (service as MovementService.MovementServiceBinder).service
+                movementService!!.updateResultCallback(this@MainActivity)
+                movementService!!.didItMove()
+                serviceBound = true
+            }
+
+            override fun onServiceDisconnected(name: ComponentName?) {
+                serviceBound = false
+            }
+        }
     }
 
     override fun onResume() {
         super.onResume()
         startService(serviceIntent)
-        bindService(serviceIntent, movementServiceConnection, Context.BIND_AUTO_CREATE)
         serviceRunning = true
+        bindService(serviceIntent, movementServiceConnection, Context.BIND_AUTO_CREATE)
+        serviceBound = true
     }
 
     override fun onPause() {
@@ -54,7 +75,9 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
                 }
             }
             R.id.clearButton -> {
-
+                if(serviceBound){
+                    movementService!!.clear()
+                }
             }
             R.id.exitButton -> {
                 // TODO: Stop service here
@@ -65,16 +88,10 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
             }
         }
     }
-}
 
-class MovementServiceConnection(context: Context): ServiceConnection {
-
-    override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
-        val movementServiceBinder = service as MovementService.MovementServiceBinder
-        movementServiceBinder.service.didItMove()
-    }
-
-    override fun onServiceDisconnected(name: ComponentName?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+    override fun onResultReady(result: MovementServiceResult) {
+        Log.d(localClassName, "Callback called.")
+        Log.d(localClassName, result.moved.toString())
+        status_message.text = result.moved.toString()
     }
 }
