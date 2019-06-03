@@ -29,14 +29,14 @@ class MovementService: Service() {
     override fun onCreate() {
         workerTask = MovementServiceTask()
         workerThread = Thread(workerTask)
+        val powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
+        wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,tag)
+        wakeLock.acquire()
         workerThread.start()
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         Toast.makeText(this, "Service starting", Toast.LENGTH_SHORT).show()
-        val powerManager = getSystemService(Context.POWER_SERVICE) as PowerManager
-        wakeLock = powerManager.newWakeLock(PowerManager.PARTIAL_WAKE_LOCK,tag)
-        wakeLock.acquire()
         if(!workerThread.isAlive){
             workerThread.start()
         }
